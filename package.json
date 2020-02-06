@@ -1,0 +1,25 @@
+{
+  "name": "todo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "typescript": "tsc --watch *.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ripcitydev/todo.git"
+  },
+  "author": "Casey T. Olivier",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ripcitydev/todo/issues"
+  },
+  "homepage": "https://github.com/ripcitydev/todo#readme",
+  "devDependencies": {
+    "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "@types/node": "^13.7.0"
+  }
+}

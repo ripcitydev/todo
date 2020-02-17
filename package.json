@@ -37,5 +37,8 @@
     "extensions": [
       "*"
     ]
+  },
+  "bin": {
+    "todo": "./bin/todo"
   }
 }

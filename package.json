@@ -24,5 +24,18 @@
   "dependencies": {
     "@types/node": "^13.7.0",
     "jira-connector": "^3.1.0"
+  },
+  "todo": {
+    "includes": [
+      "."
+    ],
+    "excludes": [
+      ".git",
+      "node_modules",
+      "package.json"
+    ],
+    "extensions": [
+      "*"
+    ]
   }
 }

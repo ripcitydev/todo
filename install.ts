@@ -8,6 +8,6 @@ config['todo'] = {
     extensions: ['*']
 }
 
-fs.writeFileSync('./package.json', JSON.stringify(config, null, '\t'));
+fs.writeFileSync('./package.json', JSON.stringify(config, null, '  '));
 
 //console.log(config);

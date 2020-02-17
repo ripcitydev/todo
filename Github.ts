@@ -1,6 +1,6 @@
 import { Task } from './Task';
 
-export class Asana implements Task {
+export class Github implements Task {
     public async authentic(): Promise<boolean> {
 
 

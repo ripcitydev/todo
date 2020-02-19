@@ -1,1 +1,36 @@
-# todo
+# Todo
+Todo parses the todo’s and fixme’s in your code, and imports them into Jira as tasks.
+
+## Installing
+
+Locally
+```
+npm install @ripcitydev/todo —save-dev
+```
+or Globally
+```
+npm install @ripcitydev/todo -g
+```
+
+## Configuring
+
+Keywords - keywords to parse
+Includes - directories to include
+Excludes - directories and/or files to exclude
+Extensions - file extensions to include and parse
+Jira - an object of authentication properties
+Github - in development
+Asana - in development
+
+To change the defaults, edit todo.json.
+
+## Running
+
+Locally
+```
+npm run todo
+```
+or Globally
+```
+todo
+```

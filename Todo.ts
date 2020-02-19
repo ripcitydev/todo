@@ -6,7 +6,43 @@ import { Task } from './Task';
 const fs = require('fs');
 
 export class Todo {
-    private static config = JSON.parse(fs.readFileSync('./package.json')).todo;
+    private static config = Todo.configure();
+
+    private static configure() {
+        let config;
+        
+        try {
+            config = JSON.parse(fs.readFileSync('./todo.json'));
+        }
+        catch (error) {
+            config = Todo.init();
+        }
+        
+        return config;
+    }
+
+    public static init(cwd = false) {
+        const todo = {
+            keywords: ['todo', 'fixme'],
+            includes: ['.'],
+            excludes: ['.git', 'node_modules', 'package.json'],
+            extensions: ['ts'],
+            jira: {
+                hostname: '',
+                username: '',
+                project: ''
+            }
+        }
+    
+        try {
+            fs.writeFileSync(`${cwd?process.env.INIT_CWD:'.'}/todo.json`, JSON.stringify(todo, null, '  '));
+        }
+        catch (error) {
+            console.log('unable to write todo.json');
+        }
+
+        return todo;
+    }
     
     public static async parse() {
         let task;
@@ -64,10 +100,15 @@ export class Todo {
                             let file = fs.readFileSync(name).toString();
                             //console.log(file);
                             
+                            //fixme implement dynamic keywords
+                            // let keywords = Todo.config.keywords.join('|');
+                            // let match = new RegExp(`/(/|\\*).*(${keywords})(.+)`);
+                            // let replace = new RegExp(`/(/|\\*).*(${keywords})`);
+                            
                             /*todo fix multi-line comments*/
-                            let todos = file.match(/\/(\/|\*).*todo(.+)/ig); //todo implement matchAll
+                            let todos = file.match(/\/(\/|\*).*(todo|fixme)(.+)/ig); //todo implement matchAll
                             for (let t=0; t<todos.length; t++) {
-                                let todo = todos[t].replace(/\/(\/|\*).*todo/, '').replace(/\*\/.*/, '').trim();
+                                let todo = todos[t].replace(/\/(\/|\*).*(todo|fixme)/, '').replace(/\*\/.*/, '').trim();
                                 todo = `${todo.charAt(0).toUpperCase()}${todo.slice(1)} in ${include}/${files[f].name}`;
 
                                 if (!(tasks[todo] || tasks[todo.toLowerCase()])) {

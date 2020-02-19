@@ -1,4 +1,5 @@
 import { Task } from './Task';
+import { Todo } from './Todo';
 
 const readline = require('readline');
 const Writable = require('stream').Writable;
@@ -53,16 +54,30 @@ export class Jira implements Task {
             });
 
             //todo add platform prompt
-            this.host = await this.question('hostname (example.atlassian.net)');
-            this.user = await this.question('username (example@domain.com)');
+            if (Todo.config.jira.hostname)
+                this.host = Todo.config.jira.hostname;
+            else
+                this.host = await this.question('hostname (example.atlassian.net)');
 
-            mutableStdout.muted = true;
-            process.stdout.write('password (API token): ');
-            this.pass = await this.question('');
-            mutableStdout.muted = false;
-            console.log('');
+            if (Todo.config.jira.username)
+                this.user = Todo.config.jira.username;
+            else
+                this.user = await this.question('username (example@domain.com)');
 
-            this.project = await this.question('project');
+            if (Todo.config.jira.password)
+                this.pass = Todo.config.jira.password;
+            else {
+                mutableStdout.muted = true;
+                process.stdout.write('password (API token): ');
+                this.pass = await this.question('');
+                mutableStdout.muted = false;
+                console.log('');
+            }
+
+            if (Todo.config.jira.project)
+                this.project = Todo.config.jira.project;
+            else
+                this.project = await this.question('project');
 
             this.line.close();
             

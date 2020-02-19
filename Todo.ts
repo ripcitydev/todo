@@ -6,7 +6,7 @@ import { Task } from './Task';
 const fs = require('fs');
 
 export class Todo {
-    private static config = Todo.configure();
+    public static config = Todo.configure();
 
     private static configure() {
         let config;
@@ -17,6 +17,22 @@ export class Todo {
         catch (error) {
             config = Todo.init();
         }
+
+        let excludes = {}; //todo functionalize excludes
+        for (let e=0; e<config.excludes.length; e++) {
+            let exclude = config.excludes[e].toString().replace('../').replace('./').replace('~/').replace('/');
+            
+            excludes[`./${exclude!='undefined'?exclude:''}`.replace(/\/\.?$/, '')] = true;
+        }
+        config.excludes = excludes;
+
+        let extensions = {}; //todo functionalize extensions
+        for (let e=0; e<config.extensions.length; e++) {
+            let extension = config.extensions[e].toString().toLowerCase().split('.');
+
+            extensions[extension[extension.length-1]] = true;
+        }
+        config.extensions = extensions;
         
         return config;
     }
@@ -71,32 +87,18 @@ export class Todo {
     }
 
     private static async process(include: string, tasks: object, task: Task) {
-        let excludes = {}; //todo functionalize excludes
-        for (let e=0; e<Todo.config.excludes.length; e++) {
-            let exclude = Todo.config.excludes[e].toString().replace('../').replace('./').replace('~/').replace('/');
-            
-            excludes[`./${exclude!='undefined'?exclude:''}`.replace(/\/\.?$/, '')] = true;
-        }
-
-        let extensions = {}; //todo functionalize extensions
-        for (let e=0; e<Todo.config.extensions.length; e++) {
-            let extension = Todo.config.extensions[e].toString().toLowerCase().split('.');
-
-            extensions[extension[extension.length-1]] = true;
-        }
-        
-        if (!excludes[include]) {
+        if (!Todo.config.excludes[include]) {
             let files = fs.readdirSync(include, { withFileTypes: true });
             //console.log(files);
             
             for (let f=0; f<files.length; f++) {
                 let name = `${include}/${files[f].name}`;
 
-                if (!excludes[name]) {
+                if (!Todo.config.excludes[name]) {
                     try {
                         let extension = files[f].name.toString().toLowerCase().split('.');
                         
-                        if (files[f].isFile() && (extensions['*'] || extensions[extension[extension.length-1]])) {
+                        if (files[f].isFile() && (Todo.config.extensions['*'] || Todo.config.extensions[extension[extension.length-1]])) {
                             let file = fs.readFileSync(name).toString();
                             //console.log(file);
                             
@@ -105,10 +107,9 @@ export class Todo {
                             // let match = new RegExp(`/(/|\\*).*(${keywords})(.+)`);
                             // let replace = new RegExp(`/(/|\\*).*(${keywords})`);
                             
-                            /*todo fix multi-line comments*/
-                            let todos = file.match(/\/(\/|\*).*(todo|fixme)(.+)/ig); //todo implement matchAll
+                            let todos = file.match(/\/(\/|\*)[^(\*\/)/s]*(todo|fixme)(.+)/ig); //todo implement matchAll
                             for (let t=0; t<todos.length; t++) {
-                                let todo = todos[t].replace(/\/(\/|\*).*(todo|fixme)/, '').replace(/\*\/.*/, '').trim();
+                                let todo = todos[t].replace(/\/(\/|\*)[^(\*\/)/s]*(todo|fixme)/i, '').replace(/\*\/.*/, '').trim();
                                 todo = `${todo.charAt(0).toUpperCase()}${todo.slice(1)} in ${include}/${files[f].name}`;
 
                                 if (!(tasks[todo] || tasks[todo.toLowerCase()])) {

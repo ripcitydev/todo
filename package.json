@@ -1,7 +1,7 @@
 {
   "name": "todo",
   "version": "1.0.0",
-  "description": "",
+  "description": "Todo parses the todo’s and fixme’s in your code, and imports them into Jira as tasks.",
   "main": "index.js",
   "scripts": {
     "todo": "node index.js",

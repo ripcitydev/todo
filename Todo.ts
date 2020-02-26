@@ -116,6 +116,8 @@ export class Todo {
                                     if (await task.insert(todo)) {
                                         tasks[todo] = true;
 
+                                        //todo update keywords with jira task id
+                                        
                                         console.log(`(Created) ${todo}`);
                                     }
                                 }

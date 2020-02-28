@@ -1,7 +1,7 @@
 {
   "name": "@ripcitydev/todo",
-  "version": "1.0.0",
-  "description": "Todo parses the todo’s and fixme’s in your code, and imports them into Jira as tasks.",
+  "version": "1.0.1",
+  "description": "Todo parses the todo’s and fixme’s in your code, and imports them into Jira.",
   "main": "index.js",
   "scripts": {
     "todo": "node index.js",
@@ -19,10 +19,10 @@
   },
   "homepage": "https://github.com/ripcitydev/todo#readme",
   "devDependencies": {
+    "@types/node": "^13.7.0",
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "@types/node": "^13.7.0",
     "jira-connector": "^3.1.0"
   },
   "bin": {

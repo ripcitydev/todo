@@ -1,13 +1,42 @@
-//import { Asana } from './Asana';
+import { Asana } from './Asana';
+import {Github} from './Github';
 import { Jira } from './Jira';
 
 import { Task } from './Task';
 
 const fs = require('fs');
 
+const read = require('readline');
+const write = require('stream').Writable;
+
 export class Todo {
     public static config = Todo.configure();
 
+    public static output = new write({
+        write: function(chunk, encoding, callback) {
+            if (!this.muted)
+                process.stdout.write(chunk, encoding);
+    
+            callback();
+        }
+    });
+    
+    private static input = read.createInterface({
+        input: process.stdin,
+        output: Todo.output,
+        terminal: true
+    });
+    
+    public static async question(text: string) {
+        return new Promise((resolve) => {
+            Todo.input.question(`${text}: `, (answer) => {
+                //console.log(`${answer}`);
+
+                resolve(answer);
+            });
+        });
+    }
+    
     private static configure() {
         let config;
         
@@ -17,8 +46,8 @@ export class Todo {
         catch (error) {
             config = Todo.init();
         }
-
-        let excludes = {}; //todo functionalize excludes
+        
+        let excludes = {};
         for (let e=0; e<config.excludes.length; e++) {
             let exclude = config.excludes[e].toString().replace('../').replace('./').replace('~/').replace('/');
             
@@ -26,7 +55,7 @@ export class Todo {
         }
         config.excludes = excludes;
 
-        let extensions = {}; //todo functionalize extensions
+        let extensions = {};
         for (let e=0; e<config.extensions.length; e++) {
             let extension = config.extensions[e].toString().toLowerCase().split('.');
 
@@ -57,20 +86,27 @@ export class Todo {
             console.log('unable to write todo.json');
         }
 
+        if (cwd) Todo.input.close();
+
         return todo;
     }
     
     public static async parse() {
         let task;
-        switch ('jira'.toString()) { //todo implement dynamic platform switch
-            case 'jira':
+        
+        console.log('To change the defaults ^C, and edit todo.json.');
+        
+        task = await Todo.question('(J)ira, (G)ithub, or (A)sana');
+        
+        switch (task.charAt(0).toUpperCase()) {
+            case 'A':
+                task = new Asana();
+                break;
+            case 'G':
+                task = new Github;
+                break;
+            default:
                 task = new Jira();
-                break;
-            case 'asana': //todo impement Asana class
-                //task = new Asana();
-                break;
-            case 'github': //todo implement Github class
-                //task = new Github;
                 break;
         }
 
@@ -84,6 +120,8 @@ export class Todo {
                 await Todo.process(`./${include!='undefined'?include:''}`.replace(/\/\.?$/, ''), tasks, task);
             }
         }
+
+        Todo.input.close();
     }
 
     private static async process(include: string, tasks: object, task: Task) {
@@ -118,10 +156,10 @@ export class Todo {
 
                                         //todo update keywords with jira task id
                                         
-                                        console.log(`(Created) ${todo}`);
+                                        console.log(`( Created ) ${todo}`);
                                     }
                                 }
-                                else console.log(`(Skipped) ${todo}`);
+                                else console.log(`(Duplicate) ${todo}`);
                             }
                         }
                         else if (files[f].isDirectory()) {

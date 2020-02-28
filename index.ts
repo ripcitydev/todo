@@ -2,7 +2,7 @@ import { Todo } from './Todo';
 
 Todo.parse()
     .then(() => {
-        //console.log('');
+        console.log('Todo complete!');
     })
     .catch((error) => {
         console.log(error);

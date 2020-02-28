@@ -1,20 +1,6 @@
 import { Task } from './Task';
 import { Todo } from './Todo';
 
-const readline = require('readline');
-const Writable = require('stream').Writable;
-
-const mutableStdout = new Writable({
-    write: function(chunk, encoding, callback) {
-        if (!this.muted)
-            process.stdout.write(chunk, encoding);
-
-        callback();
-    }
-});
-
-mutableStdout.muted = false;
-
 const JiraClient = require("jira-connector");
 
 export class Jira implements Task {
@@ -22,7 +8,6 @@ export class Jira implements Task {
     private host;
     private user;
     private pass;
-    private line;
     
     private project;
     
@@ -47,55 +32,37 @@ export class Jira implements Task {
     
     public async prompt(): Promise<void> {
         return new Promise(async (resolve) => {
-            this.line = readline.createInterface({
-                input: process.stdin,
-                output: mutableStdout,
-                terminal: true
-            });
-
             //todo add platform prompt
             if (Todo.config.jira.hostname)
                 this.host = Todo.config.jira.hostname;
             else
-                this.host = await this.question('hostname (example.atlassian.net)');
+                this.host = await Todo.question('Hostname (example.atlassian.net)');
 
             if (Todo.config.jira.username)
                 this.user = Todo.config.jira.username;
             else
-                this.user = await this.question('username (example@domain.com)');
+                this.user = await Todo.question('Username (example@domain.com)');
 
             if (Todo.config.jira.password)
                 this.pass = Todo.config.jira.password;
             else {
-                mutableStdout.muted = true;
-                process.stdout.write('password (API token): ');
-                this.pass = await this.question('');
-                mutableStdout.muted = false;
+                Todo.output.muted = true;
+                process.stdout.write('Password (or API token): ');
+                this.pass = await Todo.question('');
+                Todo.output.muted = false;
                 console.log('');
             }
 
             if (Todo.config.jira.project)
                 this.project = Todo.config.jira.project;
             else
-                this.project = await this.question('project');
-
-            this.line.close();
+                this.project = await Todo.question('Project');
             
             resolve();
         });
     }
-
-    private async question(text: string) {
-        return new Promise((resolve) => {
-            this.line.question(`${text}: `, (answer) => {
-                //console.log(`${answer}`);
-
-                resolve(answer);
-            });
-        });
-    }
     
-    public async select(): Promise<object> { //todo add select project uppercase snippet
+    public async select(): Promise<{[key: string]: boolean}> { //todo add select project uppercase snippet
         const search = await this.jira.search.search({
             "jql": `project = ${this.project}`,
             "maxResults": 0, //todo double-check select unlimited field

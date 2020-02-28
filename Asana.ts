@@ -8,12 +8,12 @@ export class Asana implements Task {
     }
 
     public async prompt(): Promise<void> {
-
+        console.log('Asana support in development.');
 
         return ;
     }
 
-    public async select(summary?: string): Promise<object> {
+    public async select(summary?: string): Promise<{[key: string]: boolean}> {
 
 
         return ;

@@ -1,5 +1,5 @@
 # Todo
-Todo parses the todo’s and fixme’s in your code, and imports them into Jira as tasks.
+Todo parses the todo’s and fixme’s in your code, and imports them into Jira.
 
 ## Installing
 
@@ -14,15 +14,19 @@ npm install @ripcitydev/todo -g
 
 ## Configuring
 
-Keywords - keywords to parse, currently supports todo and fixme
+Keywords - keywords to parse, currently supports todo and fixme.
 
-Includes - directories to include
+Includes - directories to include.
 
-Excludes - directories and/or files to exclude
+Excludes - directories and/or files to exclude.
 
-Extensions - file extensions to include and parse
+Extensions - file extensions to include and parse.
 
-Jira - an object of authentication properties
+Jira - an object of authentication properties.
+     - hostname (example.atlassian.net)
+     - username (example@domain.com)
+     - password for legacy server version or API token for jira cloud.
+     - project
 
 Github - in development
 

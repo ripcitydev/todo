@@ -22,10 +22,10 @@ Excludes - directories and/or files to exclude.
 
 Extensions - file extensions to include and parse.
 
-Jira - an object of authentication properties.
-     - hostname (example.atlassian.net)
-     - username (example@domain.com)
-     - password for legacy server version or API token for jira cloud.
+Jira - an object of authentication properties.<br />
+     - hostname (example.atlassian.net)<br />
+     - username (example@domain.com)<br />
+     - password for legacy server version or API token for jira cloud.<br />
      - project
 
 Github - in development

@@ -12,6 +12,12 @@
     "type": "git",
     "url": "git+https://github.com/ripcitydev/todo.git"
   },
+  "keywords": [
+    "todo",
+    "fixme",
+    "jira",
+    "task"
+  ],
   "author": "Casey T. Olivier",
   "license": "ISC",
   "bugs": {

@@ -82,7 +82,7 @@ export class Todo {
             
             fs.writeFileSync(`${cwd?process.env.INIT_CWD:'.'}/todo.json`, JSON.stringify(todo, null, '  '));
 
-            fs.closeSync();
+            //fs.closeSync();
         }
 
         if (cwd) Todo.input.close();

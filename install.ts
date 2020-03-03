@@ -11,7 +11,7 @@ if (!process.env.npm_config_global) {
 
             fs.writeFileSync(`${process.env.INIT_CWD}/package.json`, JSON.stringify(config, null, '  '));
 
-            fs.closeSync();
+            //fs.closeSync();
         }
     }
     catch (error) {

@@ -1,6 +1,6 @@
 {
   "name": "@ripcitydev/todo",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Todo parses the todo’s and fixme’s in your code, and imports them into Jira.",
   "main": "index.js",
   "scripts": {

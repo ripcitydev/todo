@@ -39,13 +39,8 @@ export class Todo {
     
     private static configure() {
         let config;
-        
-        try {
-            config = JSON.parse(fs.readFileSync('./todo.json'));
-        }
-        catch (error) {
-            config = Todo.init();
-        }
+
+        config = Todo.init();
         
         let excludes = {};
         for (let e=0; e<config.excludes.length; e++) {
@@ -67,23 +62,27 @@ export class Todo {
     }
 
     public static init(cwd = false) {
-        const todo = {
-            keywords: ['todo', 'fixme'],
-            includes: ['.'],
-            excludes: ['.git', 'node_modules', 'package.json'],
-            extensions: ['ts'],
-            jira: {
-                hostname: '',
-                username: '',
-                project: ''
-            }
-        }
+        let todo;
     
         try {
-            fs.writeFileSync(`${cwd?process.env.INIT_CWD:'.'}/todo.json`, JSON.stringify(todo, null, '  '));
+            todo = JSON.parse(fs.readFileSync(`${cwd?process.env.INIT_CWD:'.'}/todo.json`));
         }
         catch (error) {
-            console.log('unable to write todo.json');
+            todo = {
+                keywords: ['todo', 'fixme'],
+                includes: ['.'],
+                excludes: ['.git', 'node_modules', 'package.json'],
+                extensions: ['ts'],
+                jira: {
+                    hostname: '',
+                    username: '',
+                    project: ''
+                }
+            };
+            
+            fs.writeFileSync(`${cwd?process.env.INIT_CWD:'.'}/todo.json`, JSON.stringify(todo, null, '  '));
+
+            fs.closeSync();
         }
 
         if (cwd) Todo.input.close();

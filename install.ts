@@ -19,11 +19,4 @@ if (!process.env.npm_config_global) {
     }
 }
 
-try {
-    JSON.parse(fs.readFileSync(`${process.env.INIT_CWD}/todo.json`));
-
-    fs.closeSync();
-}
-catch (error) {
-    Todo.init(true);
-}
+Todo.init(true);

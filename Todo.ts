@@ -32,7 +32,7 @@ export class Todo {
             Todo.input.question(`${text}: `, (answer) => {
                 //console.log(`${answer}`);
 
-                resolve(answer);
+                resolve(answer.toString());
             });
         });
     }
@@ -140,14 +140,13 @@ export class Todo {
                             let file = fs.readFileSync(name).toString();
                             //console.log(file);
                             
-                            //fixme implement dynamic keywords
-                            // let keywords = Todo.config.keywords.join('|');
-                            // let match = new RegExp(`/(/|\\*).*(${keywords})(.+)`);
-                            // let replace = new RegExp(`/(/|\\*).*(${keywords})`);
+                            let keywords = Todo.config.keywords.join('|');
+                            let match = new RegExp('/[/|\\*]((?!\\*/).)*('+keywords+')((?!\\*/).)+', 'ig');
+                            let replace = new RegExp('/[/|\\*]((?!\\*/).)*('+keywords+')', 'i');
                             
-                            let todos = file.match(/\/(\/|\*)[^(\*\/)/s]*(todo|fixme)(.+)/ig); //todo implement matchAll
+                            let todos = file.match(match); //todo implement matchAll
                             for (let t=0; t<todos.length; t++) {
-                                let todo = todos[t].replace(/\/(\/|\*)[^(\*\/)/s]*(todo|fixme)/i, '').replace(/\*\/.*/, '').trim();
+                                let todo = todos[t].replace(replace, '').trim();
                                 todo = `${todo.charAt(0).toUpperCase()}${todo.slice(1)} in ${include}/${files[f].name}`;
 
                                 if (!(tasks[todo] || tasks[todo.toLowerCase()])) {

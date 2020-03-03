@@ -19,7 +19,7 @@ export class Asana implements Task {
         return ;
     }
     
-    public async insert(summary: string): Promise<boolean> {
+    public async insert(summary: string): Promise<number> {
         
         
         return ;

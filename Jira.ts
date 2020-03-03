@@ -62,10 +62,10 @@ export class Jira implements Task {
         });
     }
     
-    public async select(): Promise<{[key: string]: boolean}> { //todo add select project uppercase snippet
+    public async select(): Promise<{[key: string]: boolean}> { //todo check select project uppercase
         const search = await this.jira.search.search({
             "jql": `project = ${this.project}`,
-            "maxResults": 0, //todo double-check select unlimited field
+            "maxResults": 0, //todo check select unlimited field
             "fields": [
               "summary",
               "status"
@@ -83,30 +83,39 @@ export class Jira implements Task {
         return issues;
     }
     
-    public async insert(summary: string): Promise<boolean> { //todo add insert project uppercase snippet
+    public async insert(summary: string): Promise<number> {
         return new Promise(async (resolve) => {
-            try {
-                const issue = await this.jira.issue.createIssue({
-                    "fields": {
-                        "project": {
-                            "key": this.project
-                        },
-                        "summary": summary,
-                        //"description": "Creating of an issue using project keys and issue type names using the REST API",
-                        "issuetype": {
-                            "name": "Task"
-                        }
-                    }
-                });
+            let issue;
 
+            let create = {
+                "fields": {
+                    "project": {
+                        "key": this.project
+                    },
+                    "summary": summary,
+                    //"description": "Creating of an issue using project keys and issue type names using the REST API",
+                    "issuetype": {
+                        "name": "Task"
+                    }
+                }
+            };
+            
+            try {
+                issue = await this.jira.issue.createIssue(create);
+                
                 if (issue.id)
-                    resolve(true);
+                    resolve(issue.id);
             }
             catch (error) {
-                console.log(error);
+                create['fields']['project']['key'] = this.project.toUpperCase();
+            
+                issue = await this.jira.issue.createIssue(create);
+                
+                if (issue.id)
+                    resolve(issue.id);
             }
             
-            resolve(false);
+            resolve(0);
         });
     }
 }

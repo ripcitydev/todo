@@ -14,7 +14,7 @@ npm install @ripcitydev/todo -g
 
 ## Configuring
 
-Keywords - keywords to parse, currently supports todo and fixme.
+Keywords - keywords to parse.
 
 Includes - directories to include.
 

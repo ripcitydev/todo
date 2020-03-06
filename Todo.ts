@@ -77,6 +77,12 @@ export class Todo {
                     hostname: '',
                     username: '',
                     project: ''
+                },
+                github: {
+                    hostname: '',
+                    username: '',
+                    repository: '',
+                    organization: ''
                 }
             };
             
@@ -111,7 +117,7 @@ export class Todo {
 
         await task.prompt();
         if (await task.authentic()) {
-            let tasks = await task.select();
+            let tasks = await task.select(); //todo add soundex index
         
             for (let i=0; i<Todo.config.includes.length; i++) {
                 let include = Todo.config.includes[i].toString().replace('../').replace('./').replace('~/').replace('/');

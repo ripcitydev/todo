@@ -1,7 +1,7 @@
 {
   "name": "@ripcitydev/todo",
-  "version": "1.1.2",
-  "description": "Todo parses the todo’s and fixme’s in your code, and imports them into Jira.",
+  "version": "1.2.0",
+  "description": "Todo parses the todo’s and fixme’s in your code, and imports them into Jira or GitHub (Issues).",
   "main": "index.js",
   "scripts": {
     "todo": "node index.js",
@@ -16,7 +16,9 @@
     "todo",
     "fixme",
     "jira",
-    "task"
+    "task",
+    "github",
+    "issues"
   ],
   "author": "Casey T. Olivier",
   "license": "ISC",
@@ -29,6 +31,7 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
+    "github-api": "^3.3.0",
     "jira-connector": "^3.1.0"
   },
   "bin": {

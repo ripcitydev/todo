@@ -1,10 +1,10 @@
 import { Task } from './Task';
 import { Todo } from './Todo';
 
-const JiraClient = require("jira-connector");
+const JiraConn = require("jira-connector");
 
 export class Jira implements Task {
-    private jira;
+    private jira; //todo test jira enterprise
     private host;
     private user;
     private pass;
@@ -15,7 +15,7 @@ export class Jira implements Task {
         return new Promise((resolve) => {
             try {
                 // Initialize
-                this.jira = new JiraClient({
+                this.jira = new JiraConn({
                     host: this.host,
                     basic_auth: {
                         base64: Buffer.from(`${this.user}:${this.pass}`).toString('base64')
@@ -25,6 +25,8 @@ export class Jira implements Task {
                 resolve(true);
             }
             catch (error) {
+                console.log(error);
+                
                 resolve(false);
             }
         });
@@ -32,7 +34,6 @@ export class Jira implements Task {
     
     public async prompt(): Promise<void> {
         return new Promise(async (resolve) => {
-            //todo add platform prompt
             if (Todo.config.jira.hostname)
                 this.host = Todo.config.jira.hostname;
             else
@@ -62,7 +63,7 @@ export class Jira implements Task {
         });
     }
     
-    public async select(): Promise<{[key: string]: boolean}> { //todo check select project uppercase
+    public async select(): Promise<{[key: string]: boolean}> {
         const search = await this.jira.search.search({
             "jql": `project = ${this.project}`,
             "maxResults": 0, //todo check select unlimited field

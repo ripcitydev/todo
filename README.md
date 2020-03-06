@@ -1,5 +1,5 @@
 # Todo
-Todo parses the todo’s and fixme’s in your code, and imports them into Jira.
+Todo parses the todo’s and fixme’s in your code, and imports them into Jira or GitHub (Issues).
 
 ## Installing
 
@@ -28,7 +28,12 @@ Jira - an object of authentication properties.<br />
      - password for legacy server version or API token for jira cloud.<br />
      - project
 
-Github - in development
+Github - an object of authentication properties.<br />
+     - hostname (api.github.com)<br />
+     - username (or email)<br />
+     - password (or OAuth token)<br />
+     - organization (or owner)<br />
+     - repository
 
 Asana - in development
 

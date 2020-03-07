@@ -81,7 +81,7 @@ export class Github implements Task {
         
         let select = {};
         for (let i=0; i<issues.data.length; i++) {
-            select[issues.data[i].title.toString().toLowerCase()] = true;
+            select[Todo.metaphone(issues.data[i].title.toString())] = true;
         }
 
         //console.log(select);

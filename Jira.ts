@@ -76,7 +76,7 @@ export class Jira implements Task {
 
         let issues = {};
         for (let i=0; i<search.issues.length; i++) {
-            issues[search.issues[i].fields.summary.toString().toLowerCase()] = true;
+            issues[Todo.metaphone(search.issues[i].fields.summary.toString())] = true;
         }
         
         //console.log(issues);

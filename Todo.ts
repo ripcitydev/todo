@@ -9,6 +9,8 @@ const fs = require('fs');
 const read = require('readline');
 const write = require('stream').Writable;
 
+const metaphone = require('metaphone');
+
 export class Todo {
     public static config = Todo.configure();
 
@@ -117,7 +119,7 @@ export class Todo {
 
         await task.prompt();
         if (await task.authentic()) {
-            let tasks = await task.select(); //todo add soundex index
+            let tasks = await task.select();
         
             for (let i=0; i<Todo.config.includes.length; i++) {
                 let include = Todo.config.includes[i].toString().replace('../').replace('./').replace('~/').replace('/');
@@ -129,6 +131,10 @@ export class Todo {
         Todo.input.close();
     }
 
+    public static metaphone(todo: string) {
+        return `${metaphone(todo)}${todo.replace(/[^0-9]/g, '')}`;
+    }
+    
     private static async process(include: string, tasks: object, task: Task) {
         if (!Todo.config.excludes[include]) {
             let files = fs.readdirSync(include, { withFileTypes: true });
@@ -146,17 +152,17 @@ export class Todo {
                             //console.log(file);
                             
                             let keywords = Todo.config.keywords.join('|');
-                            let match = new RegExp('/[/|\\*]((?!\\*/).)*('+keywords+')((?!\\*/).)+', 'ig');
-                            let replace = new RegExp('/[/|\\*]((?!\\*/).)*('+keywords+')', 'i');
+                            let match = new RegExp('(#|/[/|\\*])((?!\\*/).)*('+keywords+')((?!\\*/).)+', 'ig');
+                            let replace = new RegExp('(#|/[/|\\*])((?!\\*/).)*('+keywords+')', 'i');
                             
                             let todos = file.match(match); //todo implement matchAll
                             for (let t=0; t<todos.length; t++) {
                                 let todo = todos[t].replace(replace, '').trim();
-                                todo = `${todo.charAt(0).toUpperCase()}${todo.slice(1)} in ${include}/${files[f].name}`;
+                                todo = `${todo.charAt(0).toUpperCase()}${todo.slice(1)} in ` + `${include}/${files[f].name}`.replace('./', '');
 
-                                if (!(tasks[todo] || tasks[todo.toLowerCase()])) {
+                                if (!tasks[todo] && !tasks[Todo.metaphone(todo)]) {
                                     if (await task.insert(todo)) {
-                                        tasks[todo] = true;
+                                        tasks[Todo.metaphone(todo)] = true;
 
                                         //todo update keywords with jira task id
                                         

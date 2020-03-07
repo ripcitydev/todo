@@ -6,7 +6,7 @@ const GitHubAPI = require('github-api');
 export class Github implements Task {
     private github;
     
-    private host; //todo test github enterprise
+    private host;
     private user;
     private pass;
     private repo;
@@ -22,7 +22,7 @@ export class Github implements Task {
                 password: this.pass
                 /* also acceptable: */
                 //token: this.pass
-                }, `https://${this.host?this.host:'api.github.com'}`);
+                }, `https://${this.host?this.host:'api.github.com'}`.replace(/\/$/, ''));
 
                 this.github = github.getIssues(this.org, this.repo);
                 

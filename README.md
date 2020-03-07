@@ -5,7 +5,7 @@ Todo parses the todo’s and fixme’s in your code, and imports them into Jira 
 
 Locally
 ```
-npm install @ripcitydev/todo —save-dev
+npm install @ripcitydev/todo -—save-dev
 ```
 or Globally
 ```
@@ -29,7 +29,7 @@ Jira - an object of authentication properties.<br />
      - project
 
 Github - an object of authentication properties.<br />
-     - hostname (api.github.com)<br />
+     - hostname (api.github.com or [hostname]/api/v3)<br />
      - username (or email)<br />
      - password (or OAuth token)<br />
      - organization (or owner)<br />

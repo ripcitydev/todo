@@ -5,7 +5,7 @@ Todo parses the todo’s and fixme’s in your code, and imports them into Jira 
 
 Locally
 ```
-npm install @ripcitydev/todo -—save-dev
+npm install @ripcitydev/todo --save-dev
 ```
 or Globally
 ```

@@ -1,5 +1,5 @@
 # Todo
-Todo parses the todo’s and fixme’s in your code, and imports them into Jira or GitHub (Issues).
+<p>Todo parses the todo’s and fixme’s in your code, and imports them into Jira or GitHub (Issues).</p><p>Todo's must be in line or block comment to parse, supported comment types include #, //, and /**/.</p>
 
 ## Installing
 
@@ -43,3 +43,10 @@ or Globally
 ```
 todo
 ```
+
+## Testing
+
+* Jira Cloud (pass)
+* Jira Enterprise (pass)
+* GitHub Enterprise (pass)
+* GitHub (pass)

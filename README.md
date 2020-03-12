@@ -14,10 +14,10 @@ npm install @ripcitydev/todo -g
 
 ## Configuring
 
-* Keywords - keywords to parse.
-* Includes - directories to include.
-* Excludes - directories and/or files to exclude.
-* Extensions - file extensions to include and parse.
+* Keywords - keywords to parse (default: todo, fixme).
+* Includes - relative directories to include (default: current directory, rescursive).
+* Excludes - relative directories and/or files to exclude (default: .git, build, node_modules, package.json).
+* Extensions - file extensions to include and parse (default: ts).
 * Jira - an object of authentication properties ([Create an API token](https://confluence.atlassian.com/cloud/api-tokens-938839638.html)).
   * hostname (example.atlassian.net)
   * username (case-sensitive, or email)

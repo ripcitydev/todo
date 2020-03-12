@@ -73,7 +73,7 @@ export class Todo {
             todo = {
                 keywords: ['todo', 'fixme'],
                 includes: ['.'],
-                excludes: ['.git', 'node_modules', 'package.json'],
+                excludes: ['.git', 'build', 'node_modules', 'package.json'],
                 extensions: ['ts'],
                 jira: {
                     hostname: '',

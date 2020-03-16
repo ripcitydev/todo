@@ -1,5 +1,5 @@
 # Todo
-<p>Todo parses the todo’s and fixme’s in your code, and imports them into Jira or GitHub (Issues).</p><p>Todo's must be in line or block comment to parse, supported comment types include #, //, and /**/.</p>
+<p>Todo parses the todo’s and fixme’s in your code, and imports them into Jira or GitHub (Issues).</p><p>Todo's must be in line or block comment to parse, supported comment types include #, --, //, and /**/.</p>
 
 ## Installing
 
@@ -17,7 +17,7 @@ npm install @ripcitydev/todo -g
 * Keywords - keywords to parse (default: todo, fixme).
 * Includes - relative directories to include (default: current directory, rescursive).
 * Excludes - relative directories and/or files to exclude (default: .git, build, node_modules, package.json).
-* Extensions - file extensions to include and parse (default: ts).
+* Extensions - file extensions to include and parse (default: js, ts).
 * Jira - an object of authentication properties ([Create an API token](https://confluence.atlassian.com/cloud/api-tokens-938839638.html)).
   * hostname (example.atlassian.net)
   * username (case-sensitive, or email)

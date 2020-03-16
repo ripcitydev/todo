@@ -63,37 +63,33 @@ export class Todo {
         return config;
     }
 
-    public static init(cwd = false) {
+    public static init() {
         let todo;
     
         try {
-            todo = JSON.parse(fs.readFileSync(`${cwd?process.env.INIT_CWD:'.'}/todo.json`));
+            todo = JSON.parse(fs.readFileSync(`${process.env.INIT_CWD}/todo.json`));
         }
         catch (error) {
             todo = {
                 keywords: ['todo', 'fixme'],
                 includes: ['.'],
                 excludes: ['.git', 'build', 'node_modules', 'package.json'],
-                extensions: ['ts'],
+                extensions: ['js', 'ts'],
                 jira: {
                     hostname: '',
-                    username: '',
                     project: ''
                 },
                 github: {
                     hostname: '',
-                    username: '',
                     repository: '',
                     organization: ''
                 }
             };
             
-            fs.writeFileSync(`${cwd?process.env.INIT_CWD:'.'}/todo.json`, JSON.stringify(todo, null, '  '));
+            fs.writeFileSync(`${process.env.INIT_CWD}/todo.json`, JSON.stringify(todo, null, '  '));
 
             //fs.closeSync();
         }
-
-        if (cwd) Todo.input.close();
 
         return todo;
     }
@@ -132,6 +128,11 @@ export class Todo {
     }
 
     public static metaphone(todo: string) {
+        let extension = todo.split('.');
+        
+        if (extension.length > 1)
+            todo = todo.replace(new RegExp('\\.'+extension[extension.length-1]+'$', 'i'), '');
+        
         return `${metaphone(todo)}${todo.replace(/[^0-9]/g, '')}`;
     }
     
@@ -140,7 +141,7 @@ export class Todo {
             let files = fs.readdirSync(include, { withFileTypes: true });
             //console.log(files);
             
-            for (let f=0; f<files.length; f++) {
+            for (let f=files.length-1; f>=0; f--) {
                 let name = `${include}/${files[f].name}`;
 
                 if (!Todo.config.excludes[name]) {
@@ -152,8 +153,8 @@ export class Todo {
                             //console.log(file);
                             
                             let keywords = Todo.config.keywords.join('|');
-                            let match = new RegExp('(#|/[/|\\*])((?!\\*/).)*('+keywords+')((?!\\*/).)+', 'ig');
-                            let replace = new RegExp('(#|/[/|\\*])((?!\\*/).)*('+keywords+')', 'i');
+                            let match = new RegExp('(#|--|/[/|\\*])((?!\\*/).)*('+keywords+')((?!\\*/).)+', 'ig');
+                            let replace = new RegExp('(#|--|/[/|\\*])((?!\\*/).)*('+keywords+')', 'i');
                             
                             let todos = file.match(match); //todo implement matchAll
                             for (let t=0; t<todos.length; t++) {

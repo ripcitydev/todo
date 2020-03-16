@@ -19,5 +19,6 @@ if (!process.env.npm_config_global) {
     }
 }
 
-//todo fix redundant package read
-Todo.init(true);
+Todo.init();
+
+process.exit();

@@ -74,7 +74,8 @@ export class Github implements Task {
 
     public async select(summary?: string): Promise<{[key: string]: boolean}> {
         const issues = await this.github.listIssues({
-            filter: 'all'
+            filter: 'all',
+            state: 'all'
         });
 
         //console.log(issues);

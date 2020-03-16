@@ -4,7 +4,7 @@ import { Todo } from './Todo';
 const JiraConn = require("jira-connector");
 
 export class Jira implements Task {
-    private jira; //todo test jira enterprise
+    private jira;
     private host;
     private user;
     private pass;
